@@ -25,6 +25,9 @@ public class ProdutoRegraService implements ProdutoService {
 
     @Override
     public Produto create(ProdutoDto dto) {
+        if (dto.getCategoriaId() == null) {
+            throw new IllegalArgumentException("O ID da categoria não pode ser nulo.");
+        }
         Categoria categoria = categoriaRepository.findById(dto.getCategoriaId())
                 .orElseThrow(() -> new ResourceNotFoundException("Categoria não encontrada!"));
 
