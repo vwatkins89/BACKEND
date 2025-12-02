@@ -2,6 +2,7 @@ package com.ecommerce.techhive.service;
 
 import java.util.List;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import com.ecommerce.techhive.dto.ProdutoDto;
@@ -10,6 +11,7 @@ import com.ecommerce.techhive.model.Produto;
 import com.ecommerce.techhive.repository.ProdutoRepository;
 
 @Service
+@Primary
 public class ProdutoRegraService implements ProdutoService {
 	private final ProdutoRepository prodRepository;
 

@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.ecommerce.techhive.model.Produto;
 
 public interface ProdutoRepository extends JpaRepository<Produto, Long> {
-	boolean existsByNome(String nome, String categoria);
+	boolean existsByNomeAndCategoria(String nome, String categoria);
 	List<Produto> findByAtivoTrue();
 }
