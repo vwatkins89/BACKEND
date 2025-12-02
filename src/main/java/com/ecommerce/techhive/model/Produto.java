@@ -6,6 +6,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "produtos")
@@ -16,15 +19,18 @@ public class Produto {
 	private Long id;
 
 	@Column(nullable = false)
+	@NotBlank(message = "Nome do produto é obrigatório!")
 	private String nome;
 
 	@Column(nullable = false, length = 1000)
 	private String descricao;
 
 	@Column(nullable = false)
+	@Min(value = 1, message = "Preço do produto deve ser maior que zero!")
 	private Double preco;
 
 	@Column(nullable = false)
+	@NotNull(message = "Produto deve estar vinculado a uma categoria válida!")
 	private String categoria;
 
 	@Column(nullable = false)
