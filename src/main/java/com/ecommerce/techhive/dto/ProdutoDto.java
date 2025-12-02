@@ -1,5 +1,7 @@
 package com.ecommerce.techhive.dto;
 
+import jakarta.validation.constraints.NotNull;
+
 public class ProdutoDto {
 
 	private String nome;
@@ -34,6 +36,7 @@ public class ProdutoDto {
 		this.preco = preco;
 	}
 
+	@NotNull(message = "O ID da Categoria é obrigatório.")
 	public Long getCategoriaId() {
 		return categoriaId;
 	}
