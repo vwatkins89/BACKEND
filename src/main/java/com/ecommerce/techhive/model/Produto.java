@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -29,9 +31,10 @@ public class Produto {
 	@Min(value = 1, message = "Preço do produto deve ser maior que zero!")
 	private Double preco;
 
-	@Column(nullable = false)
+	@ManyToOne
 	@NotNull(message = "Produto deve estar vinculado a uma categoria válida!")
-	private String categoria;
+	@JoinColumn(name = "categoria_id")
+	private Categoria categoria;
 
 	@Column(nullable = false)
 	private String marca;
@@ -79,11 +82,11 @@ public class Produto {
 		this.preco = preco;
 	}
 
-	public String getCategoria() {
+	public Categoria getCategoria() {
 		return categoria;
 	}
 
-	public void setCategoria(String categoria) {
+	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 	}
 

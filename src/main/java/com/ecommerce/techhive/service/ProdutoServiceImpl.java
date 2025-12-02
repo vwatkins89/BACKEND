@@ -6,21 +6,27 @@ import org.springframework.stereotype.Service;
 
 import com.ecommerce.techhive.dto.ProdutoDto;
 import com.ecommerce.techhive.model.Produto;
+import com.ecommerce.techhive.model.Categoria;
 import com.ecommerce.techhive.repository.ProdutoRepository;
+import com.ecommerce.techhive.repository.CategoriaRepository;
 
 @Service
 public class ProdutoServiceImpl implements ProdutoService {
 
     private final ProdutoRepository prodRepository;
+    private final CategoriaRepository categoriaRepository;
 
-    public ProdutoServiceImpl(ProdutoRepository prodRepository) {
+    public ProdutoServiceImpl(ProdutoRepository prodRepository, CategoriaRepository categoriaRepository) {
         this.prodRepository = prodRepository;
+        this.categoriaRepository = categoriaRepository;
     }
 
     @Override
     public Produto create(ProdutoDto dto) {
+        Categoria categoria = categoriaRepository.findById(dto.getCategoriaId())
+                .orElseThrow(() -> new RuntimeException("Categoria não encontrada."));
 
-        if (prodRepository.existsByNomeAndCategoria(dto.getNome(), dto.getCategoria())) {
+        if (prodRepository.existsByNomeAndCategoria(dto.getNome(), categoria)) {
             throw new RuntimeException("Produto já cadastrado nessa categoria.");
         }
 
@@ -28,7 +34,7 @@ public class ProdutoServiceImpl implements ProdutoService {
         produto.setNome(dto.getNome());
         produto.setDescricao(dto.getDescricao());
         produto.setPreco(dto.getPreco());
-        produto.setCategoria(dto.getCategoria());
+        produto.setCategoria(categoria);
         produto.setMarca(dto.getMarca());
         produto.setQuantidadeEstoque(dto.getQuantidadeEstoque());
         produto.setImagemUrl(dto.getImagemUrl());
@@ -52,10 +58,13 @@ public class ProdutoServiceImpl implements ProdutoService {
     public Produto update(Long id, ProdutoDto dto) {
         Produto produto = findById(id);
 
+        Categoria categoria = categoriaRepository.findById(dto.getCategoriaId())
+                .orElseThrow(() -> new RuntimeException("Categoria não encontrada."));
+
         produto.setNome(dto.getNome());
         produto.setDescricao(dto.getDescricao());
         produto.setPreco(dto.getPreco());
-        produto.setCategoria(dto.getCategoria());
+        produto.setCategoria(categoria);
         produto.setMarca(dto.getMarca());
         produto.setQuantidadeEstoque(dto.getQuantidadeEstoque());
         produto.setImagemUrl(dto.getImagemUrl());
@@ -66,7 +75,7 @@ public class ProdutoServiceImpl implements ProdutoService {
     @Override
     public void delete(Long id) {
         Produto produto = findById(id);
-        produto.setAtivo(false); // Soft delete
+        produto.setAtivo(false);
         prodRepository.save(produto);
     }
 
